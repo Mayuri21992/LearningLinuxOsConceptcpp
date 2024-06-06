@@ -35,5 +35,11 @@ int main(){
     sharedSptr2->printdata();
     sharedpsptr3->printdata();
     cout<<sharedSptr1.use_count()<<endl;
+    weak_ptr<student>weakSptr,wSptr1,wSptr2,wsptr3;
+    weakSptr=sharedSptr1;
+    wSptr1=sharedSptr1;
+    wSptr2=sharedSptr1;
+    wsptr3=sharedSptr1;
+    
     return 0;
 }
