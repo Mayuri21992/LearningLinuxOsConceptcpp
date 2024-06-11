@@ -12,11 +12,12 @@ using namespace std;
 static string PInfo="PersonDetails.txt";
 static string SInfo="StudentDetails.txt";
 class Person{
+  public:
     string Name;
     string address;
     ofstream pInfoptr;
 
-    void storePersondetails()
+    virtual void storedetails()
     {
         pInfoptr.open(PInfo,ios::app);
         if(!pInfoptr){
@@ -28,20 +29,22 @@ class Person{
         pInfoptr.close();
         }  
     }
-    public:void Setdetails(){
+    public:
+    virtual void Setdetails(){
         cin>>Name;
         cin>>address;
     }
-    void Getdetails(){
+    virtual void Getdetails(){
         cout<<"Details of "<<Name<<" "<<address<<endl;
-        storePersondetails();
+        storedetails();
     }
     
 };
 //student class inherirating properties of person
 class Student:public Person{
      int rollNum;
-     void storePersondetails()
+     ofstream sInfoptr;
+     void storedetails()
     {
         sInfoptr.open(SInfo,ios::app);
         string RNUM=to_string(rollNum);
@@ -50,25 +53,28 @@ class Student:public Person{
         }
         else {
         cout<<"File created and data got written to file";    
-        sInfoptr<<Name<<"  "<<address<<"  "<<RNUM"\n";
+        sInfoptr<<Name<<"  "<<address<<"  "<<RNUM<<"\n";
         sInfoptr.close();
         }  
     }
-    public: void Setdetails();
+    public: void Setdetails()
     {
         cin>>Name;
         cin>>address;
         cin>>rollNum;
     }
     void Getdetails(){
-        cout<<Name<<address<<rollnum<<endl;
+        cout<<Name<<address<<rollNum<<endl;
+        storedetails();
     }
-
-
-}
+};
 int main(){
-    class Person Pobj;
+    /*Person Pobj;
     Pobj.Setdetails();
     Pobj.Getdetails();
+    */
+    Student Sobj;
+    Sobj.Setdetails();
+    Sobj.Getdetails();
     return 0;
 }
