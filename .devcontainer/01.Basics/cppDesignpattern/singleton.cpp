@@ -1,14 +1,23 @@
 #include<iostream>
-#include<fstream>
+#include<stdlib.h>
+#include<sqlite3.h>
 using namespace std;
 //creating singleton design pattern
-static string fileName="loggerfile.txt";
+static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+   int i;
+   for(i = 0; i<argc; i++) {
+      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+   }
+   printf("\n");
+   return 0;
+}
 class Logger{
     int ID;
-   
-    ofstream fileptr;
-    
+    sqlite3 *db;
+    int rc;
+    string sql;
     string name;
+    char *zErrMsg = 0;
     static Logger* instancePtr;
     Logger(){}
     public:
@@ -20,16 +29,25 @@ void setdata(){
     cin>>name;
 }
 void writeIntoLogger(){
-    fileptr.open(fileName,ios::app);
-    string IDstring=to_string(ID);
-    if(!fileptr){
-           cout<<" Error while creating the file "<<endl;          
-    }
-    else {
-        cout<<"File created and data got written to file";    
-        fileptr<<IDstring<<name<<"\n";
-        fileptr.close();                   
-    }
+    rc=sqlite3_open("example.db",&db);
+    if( rc ){
+       fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+      //return(0);
+      } else {
+      fprintf(stderr, "Opened database successfully\n");
+   }
+
+        
+    
+ sql = "CREATE TABLE PEOPLE ("  \
+      "ID INT PRIMARY KEY     NOT NULL," \
+      "NAME           TEXT    NOT NULL);";
+    
+    // Run the SQL (convert the string to a C-String with c_str() )
+    rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
+    
+    // Close the SQL connection
+    sqlite3_close(db);
 
 }
 void getdata(){

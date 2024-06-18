@@ -4,6 +4,10 @@
 	"name": "C++",
 	"build": {
 		"dockerfile": "Dockerfile"
+	},
+	"features": {
+		"ghcr.io/swift-server-community/swift-devcontainer-features/sqlite:1": {},
+		"ghcr.io/warrenbuckley/codespace-features/sqlite:1": {}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
